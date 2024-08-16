@@ -48,7 +48,7 @@ func main() {
 			alignName := "left"
 			alignName = strings.TrimPrefix(os.Args[1], "--align=")
 			if alignName == "left" {
-				asciiart.LeftText(baname, input)
+				asciiart.LeftText(banner, inputsplit)
 			} else if alignName == "right" {
 				asciiart.RightText(banner, inputsplit)
 			} else if alignName == "center" {
