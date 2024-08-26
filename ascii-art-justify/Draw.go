@@ -87,14 +87,18 @@ func CenterText(banner map[rune][]string, inpultsplit []string) {
 }
 
 func JustifyText(banner map[rune][]string, inpultsplit []string, input string) {
-	if CountSpaces(input) >= 0 {
-		LeftText(banner, inpultsplit)
-		return
+
+	count := GetTerminalSize() - (GetArtSize(banner, inpultsplit))
+	fmt.Println(count)
+
+	if count % 10 != 0 {
+		count = count +1
 	}
-	if CountSpaces(input) == 1 {
-	}
-	// count := GetTerminalSize() - (GetArtSize(banner, inpultsplit))
-	// lastCount := count / CountSpaces(input)
+	fmt.Println(count)
+
+	lastCount := count / CountSpaces(input) 
+	
+
 	for idx, v := range inpultsplit {
 		if Checknewline(inpultsplit) && idx != len(inpultsplit)-1 {
 			fmt.Println()
@@ -104,7 +108,14 @@ func JustifyText(banner map[rune][]string, inpultsplit []string, input string) {
 		} else if len(v) != 0 && !Checknewline(inpultsplit) {
 			for i := 0; i < 8; i++ {
 				for j := 0; j < len(v); j++ {
+					if v[j] == ' '{
+						for z := 0; z < lastCount-1; z++ {
+							fmt.Print(" ")
+						}
+						continue
+					}
 					fmt.Print(banner[rune(v[j])][i])
+
 				}
 				fmt.Println()
 			}
