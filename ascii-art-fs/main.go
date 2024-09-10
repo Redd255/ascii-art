@@ -1,22 +1,24 @@
 package main
 
 import (
-	"asciiart"
 	"fmt"
 	"os"
 	"strings"
+
+	asciiart "asciiart/src"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("need to write a one argument")
+		fmt.Println("Usage: go run . [STRING] [BANNER]\n\nEX: go run . something standard")
 		return
 	}
 	if !asciiart.Checkchars(os.Args[1]) {
 		fmt.Println("Input should contain only printable ASCII characters.")
 		return
 	}
-	baname := "standard"
+	baname := "standard" // this is the default banner
+	folder := "banners/" // thsi is if the user want to change the name banner's folder
 	if len(os.Args) > 2 {
 		input2 := os.Args[2]
 		switch input2 {
@@ -30,7 +32,7 @@ func main() {
 			fmt.Println("Invalid banner name")
 			return
 		}
-		banner, err := asciiart.MapBanner(baname + ".txt")
+		banner, err := asciiart.MapBanner(folder + baname + ".txt")
 		if err != nil {
 			fmt.Println("Error loading banner:", err)
 			return
@@ -38,8 +40,8 @@ func main() {
 		input := os.Args[1]
 		inputsplit := strings.Split(input, "\\n")
 		asciiart.Draw(banner, inputsplit)
-	} else {
-		banner, err := asciiart.MapBanner(baname + ".txt")
+	} else if len(os.Args) == 2{ // if the len of arg are not
+		banner, err := asciiart.MapBanner(folder + baname + ".txt")
 		if err != nil {
 			fmt.Println("Error loading banner:", err)
 			return
@@ -47,5 +49,7 @@ func main() {
 		input := os.Args[1]
 		inputsplit := strings.Split(input, "\\n")
 		asciiart.Draw(banner, inputsplit)
+	} else { // if the len of arg are not 3
+		fmt.Println("Usage: go run . [STRING] [BANNER]\n\nEX: go run . something standard")
 	}
 }
