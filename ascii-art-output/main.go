@@ -73,7 +73,7 @@ func main() {
 		inputsplit := strings.Split(input, "\\n")
 		asciiart.DrawInFile(banner, inputsplit, fileName)
 	} else {
-		fmt.Println("Error: Invalid number of arguments.")
+		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 		return
 	}
 }
