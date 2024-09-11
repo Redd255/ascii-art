@@ -1,10 +1,11 @@
 package main
 
 import (
-	"asciiart"
 	"fmt"
 	"os"
 	"strings"
+
+	asciiart "asciiart/src"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 		fmt.Println("Error: Too many arguments")
 		return
 	} else {
+		folder := "banners/"
 		baname := "standard"
 		if len(os.Args) > 3 {
 			input2 := os.Args[3]
@@ -30,7 +32,7 @@ func main() {
 				return
 			}
 		}
-		banner, err := asciiart.MapBanner(baname + ".txt")
+		banner, err := asciiart.MapBanner(folder+baname + ".txt")
 		if err != nil {
 			fmt.Println("Error loading banner:", err)
 			return
@@ -54,7 +56,7 @@ func main() {
 			} else if alignName == "center" {
 				asciiart.CenterText(banner, inputsplit)
 			} else if alignName == "justify" {
-				asciiart.JustifyText(banner, inputsplit,input)
+				asciiart.JustifyText(banner, inputsplit, input)
 			} else {
 				fmt.Println("Invalid alignment option")
 				return
