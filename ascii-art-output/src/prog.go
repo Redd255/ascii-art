@@ -33,17 +33,12 @@ func MapBanner(filename string) (map[rune][]string, error) {
 }
 
 func Checknewline(inpultsplit []string) bool {
-	c := 0
 	for _, line := range inpultsplit {
 		if len(line) != 0 {
-			c++
+			return false
 		}
 	}
-	if c == 0 {
-		return true
-	} else {
-		return false
-	}
+	return true
 }
 
 func Draw(banner map[rune][]string, inpultsplit []string) {
