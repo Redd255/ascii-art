@@ -14,12 +14,11 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Error: need to write a one argument")
 		return
-	} else if len(os.Args) == 2 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
-		//EX : go run . [string]
-		asciiart.Draw(banner, os.Args[1])
-	} else if len(os.Args) == 3 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
+	} else if len(os.Args) == 2 || len(os.Args) == 3 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
 		//EX : go run . [string] [banner]
-		banner = os.Args[2]
+		if len(os.Args) == 3 {
+			banner = os.Args[2]
+		}
 		asciiart.Draw(banner, os.Args[1])
 	} else if (len(os.Args) == 3 || len(os.Args) == 4) && strings.HasPrefix(os.Args[1], "--output=") && strings.HasSuffix(os.Args[1], ".txt") {
 		//EX : go run . [output] [string] [banner]
