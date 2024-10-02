@@ -1,6 +1,7 @@
 package asciiart
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -33,7 +34,11 @@ func GetTerminalSize() int {
 	return width
 }
 
-func GetArtSize(banner map[rune][]string, inpultsplit []string) int {
+func GetArtSize(banner string, inpultsplit []string) int {
+	maps, err := MapBanner("banners/" + banner + ".txt")
+	if err != nil {
+		fmt.Println(err)
+	}
 	count := 0
 
 	for _, v := range inpultsplit {
@@ -43,7 +48,7 @@ func GetArtSize(banner map[rune][]string, inpultsplit []string) int {
 					if v[j] == ' ' {
 						continue
 					}
-					count += len(banner[rune(v[j])][i])
+					count += len(maps[rune(v[j])][i])
 				}
 			}
 		}

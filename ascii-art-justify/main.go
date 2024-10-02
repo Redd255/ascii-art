@@ -9,58 +9,48 @@ import (
 )
 
 func main() {
+	banner := "standard"
+	var fileName string
 	if len(os.Args) < 2 {
 		fmt.Println("Error: need to write a one argument")
 		return
-	} else if len(os.Args) > 4 {
-		fmt.Println("Error: Too many arguments")
-		return
-	} else {
-		folder := "banners/"
-		baname := "standard"
-		if len(os.Args) > 3 {
-			input2 := os.Args[3]
-			switch input2 {
-			case "standard":
-				baname = "standard"
-			case "shadow":
-				baname = "shadow"
-			case "thinkertoy":
-				baname = "thinkertoy"
-			default:
-				fmt.Println("Invalid banner name")
-				return
-			}
-		}
-		banner, err := asciiart.MapBanner(folder+baname + ".txt")
-		if err != nil {
-			fmt.Println("Error loading banner:", err)
+	} else if len(os.Args) == 2 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
+		//EX : go run . [string]
+		asciiart.Draw(banner, os.Args[1])
+	} else if len(os.Args) == 3 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
+		//EX : go run . [string] [banner]
+		banner = os.Args[2]
+		asciiart.Draw(banner, os.Args[1])
+	} else if (len(os.Args) == 3 || len(os.Args) == 4) && strings.HasPrefix(os.Args[1], "--output=") && strings.HasSuffix(os.Args[1], ".txt") {
+		//EX : go run . [output] [string] [banner]
+		if os.Args[1] == "--output=.txt" {
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 			return
 		}
-		if strings.HasPrefix(os.Args[1], "--align=") {
-			// For Usage: go run . [OPTION] [STRING] [BANNER]
-			input := os.Args[2]
-			var inputsplit []string
-			if asciiart.Checkchars(input) {
-				inputsplit = strings.Split(input, "\\n")
-			} else if !asciiart.Checkchars(input) {
-				fmt.Println("Input should contain only printable ASCII characters.")
-				return
-			}
-			alignName := "left"
-			alignName = strings.TrimPrefix(os.Args[1], "--align=")
-			if alignName == "left" {
-				asciiart.LeftText(banner, inputsplit)
-			} else if alignName == "right" {
-				asciiart.RightText(banner, inputsplit)
-			} else if alignName == "center" {
-				asciiart.CenterText(banner, inputsplit)
-			} else if alignName == "justify" {
-				asciiart.JustifyText(banner, inputsplit, input)
-			} else {
-				fmt.Println("Invalid alignment option")
-				return
-			}
+		fileName = strings.TrimPrefix(os.Args[1], "--output=")
+		if len(os.Args) == 4 {
+			banner = os.Args[3]
 		}
+		asciiart.DrawInFile(banner, os.Args[2], fileName)
+	} else if (len(os.Args) == 3 || len(os.Args) == 4) && strings.HasPrefix(os.Args[1], "--align=") {
+		//EX : go run . [align] [string] [banner]
+		if len(os.Args) == 4 {
+			banner = os.Args[3]
+		}
+		option := strings.TrimPrefix(os.Args[1], "--align=")
+		switch option {
+		case "left":
+			asciiart.LeftText(banner, os.Args[2])
+		case "right":
+			asciiart.RightText(banner, os.Args[2])
+		case "center":
+			asciiart.CenterText(banner, os.Args[2])
+		case "justify":
+			asciiart.JustifyText(banner, os.Args[2])
+		default:
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+		}
+	} else {
+		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 	}
 }
