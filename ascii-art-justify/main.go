@@ -14,7 +14,7 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Error: need to write a one argument")
 		return
-	} else if len(os.Args) == 2 || len(os.Args) == 3 && !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
+	} else if (len(os.Args) == 2 || len(os.Args) == 3 )&& !strings.HasPrefix(os.Args[1], "--output=") && !strings.HasPrefix(os.Args[1], "--align=") {
 		//EX : go run . [string] [banner]
 		if len(os.Args) == 3 {
 			banner = os.Args[2]
