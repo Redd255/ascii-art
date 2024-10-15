@@ -53,15 +53,19 @@ func main() {
 		}
 	} else if (len(os.Args) == 3 || len(os.Args) == 4) && strings.HasPrefix(os.Args[1], "--color=") {
 		// EX : go run . [color] [string] [banner]
+		if !strings.ContainsAny(os.Args[1], "=") {
+			fmt.Println("Usage: go run . [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+			return
+		}
 		colorFlag := flag.String("color", "", "Specify color for the substring or the entire string")
 		flag.Parse()
 		args := flag.Args()
 		if len(args) == 1 {
 			asciiart.DrawColor(*colorFlag, args[0], banner)
 		} else {
-			asciiart.DrawSubColor(*colorFlag, args[1],args[0], banner)
+			asciiart.DrawSubColor(*colorFlag, args[1], args[0], banner)
 		}
 	} else {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+		fmt.Println("Usage: go run . [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
 	}
 }
