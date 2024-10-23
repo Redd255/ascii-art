@@ -51,7 +51,7 @@ func main() {
 		default:
 			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 		}
-	} else if (len(os.Args) == 3 || len(os.Args) == 4) && strings.HasPrefix(os.Args[1], "--color=") {
+	} else if (len(os.Args) == 3 || len(os.Args) == 4 || len(os.Args) == 5) && strings.HasPrefix(os.Args[1], "--color=") {
 		// EX : go run . [color] [string] [banner]
 		if !strings.ContainsAny(os.Args[1], "=") {
 			fmt.Println("Usage: go run . [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
@@ -60,9 +60,16 @@ func main() {
 		colorFlag := flag.String("color", "", "Specify color for the substring or the entire string")
 		flag.Parse()
 		args := flag.Args()
-		if len(args) == 1 {
+		if len(args) == 1 || (len(args) == 2 && os.Args[3] == "shadow" || os.Args[3] == "standard" || os.Args[3] == "thinkertoy") {
+			if len(args) == 2 {
+				banner = args[1]
+			}
 			asciiart.DrawColor(*colorFlag, args[0], banner)
 		} else {
+			// EX : go run . [color] [sub] [string] [banner]
+			if len(args) == 3 {
+				banner = args[2]
+			}
 			asciiart.DrawSubColor(*colorFlag, args[1], args[0], banner)
 		}
 	} else {
